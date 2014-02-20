@@ -74,8 +74,7 @@ public class DatabasesActivity extends Activity {
         */
         
         try {
-            String destPath = "/data/data/" + getPackageName() +
-                "/databases";
+            String destPath = "/data/data/" + getPackageName() + "/databases";
             File f = new File(destPath);
             if (!f.exists()) {            	
             	f.mkdirs();
@@ -95,16 +94,18 @@ public class DatabasesActivity extends Activity {
         //---get all contacts---
         db.open();
         Cursor c = db.getAllContacts();
-        if (c.moveToFirst())
-        {
+        if (c.moveToFirst()){
             do {
                 DisplayContact(c);
             } while (c.moveToNext());
         }
         db.close();
-    }
+    } // end of onCreate()
     
-    public void CopyDB(InputStream inputStream, 
+    //=================================================================
+    // copyDB() - copy db files?
+    //=================================================================
+    public void CopyDB(InputStream inputStream,
     OutputStream outputStream) throws IOException {
         //---copy 1K bytes at a time---
         byte[] buffer = new byte[1024];
@@ -115,13 +116,15 @@ public class DatabasesActivity extends Activity {
         inputStream.close();
         outputStream.close();
     }
-
-    public void DisplayContact(Cursor c)
-    {
+    
+    //=================================================================
+    // DisplayContact() - Display row
+    //=================================================================
+    public void DisplayContact(Cursor c){
         Toast.makeText(this,
                 "id: " + c.getString(0) + "\n" +
                 "Name: " + c.getString(1) + "\n" +
                 "Email:  " + c.getString(2),
                 Toast.LENGTH_LONG).show();
     }
-}
+}// end of Activity

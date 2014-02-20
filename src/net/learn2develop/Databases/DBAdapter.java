@@ -27,22 +27,18 @@ public class DBAdapter {
     DatabaseHelper DBHelper;
     SQLiteDatabase db;
     
-    public DBAdapter(Context ctx)
-    {
+    public DBAdapter(Context ctx){
         this.context = ctx;
         DBHelper = new DatabaseHelper(context);
     }
 
-    private static class DatabaseHelper extends SQLiteOpenHelper
-    {
-        DatabaseHelper(Context context)
-        {
+    private static class DatabaseHelper extends SQLiteOpenHelper{
+        DatabaseHelper(Context context){
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override
-        public void onCreate(SQLiteDatabase db)
-        {
+        public void onCreate(SQLiteDatabase db){
             try {
                 db.execSQL(DATABASE_CREATE);
             } catch (SQLException e) {
@@ -51,8 +47,7 @@ public class DBAdapter {
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-        {
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS contacts");
@@ -61,21 +56,18 @@ public class DBAdapter {
     }
 
     //---opens the database---
-    public DBAdapter open() throws SQLException 
-    {
+    public DBAdapter open() throws SQLException{
         db = DBHelper.getWritableDatabase();
         return this;
     }
 
     //---closes the database---
-    public void close() 
-    {
+    public void close(){
         DBHelper.close();
     }
 
     //---insert a contact into the database---
-    public long insertContact(String name, String email) 
-    {
+    public long insertContact(String name, String email){
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_NAME, name);
         initialValues.put(KEY_EMAIL, email);
@@ -83,21 +75,18 @@ public class DBAdapter {
     }
 
     //---deletes a particular contact---
-    public boolean deleteContact(long rowId) 
-    {
+    public boolean deleteContact(long rowId){
         return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
     //---retrieves all the contacts---
-    public Cursor getAllContacts()
-    {
+    public Cursor getAllContacts(){
         return db.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_NAME,
                 KEY_EMAIL}, null, null, null, null, null);
     }
 
     //---retrieves a particular contact---
-    public Cursor getContact(long rowId) throws SQLException 
-    {
+    public Cursor getContact(long rowId) throws SQLException{
         Cursor mCursor =
                 db.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
                 KEY_NAME, KEY_EMAIL}, KEY_ROWID + "=" + rowId, null,
@@ -109,8 +98,7 @@ public class DBAdapter {
     }
 
     //---updates a contact---
-    public boolean updateContact(long rowId, String name, String email) 
-    {
+    public boolean updateContact(long rowId, String name, String email){
         ContentValues args = new ContentValues();
         args.put(KEY_NAME, name);
         args.put(KEY_EMAIL, email);
