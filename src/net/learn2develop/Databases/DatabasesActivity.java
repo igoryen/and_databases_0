@@ -121,7 +121,7 @@ public class DatabasesActivity extends Activity {
     // DisplayContact() - Display row
     //=================================================================
     public void DisplayContact(Cursor c){
-        Toast.makeText(this,
+    	Toast.makeText(this,
                 "id: " + c.getString(0) + "\n" +
                 "Name: " + c.getString(1) + "\n" +
                 "Email:  " + c.getString(2),
