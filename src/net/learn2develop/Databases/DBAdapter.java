@@ -21,6 +21,9 @@ public class DBAdapter {
     static final String DATABASE_CREATE =
         "create table contacts (_id integer primary key autoincrement, "
         + "name text not null, email text not null);";
+    
+	static final int COL_NAME = 1;
+	static final int COL_EMAIL = 2;
 
     final Context context;
 

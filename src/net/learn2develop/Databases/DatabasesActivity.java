@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class DatabasesActivity extends Activity {
@@ -29,18 +31,10 @@ public class DatabasesActivity extends Activity {
         db.close();
         */
         
-        /*
+        
         //--get all contacts---
-        db.open();
-        Cursor c = db.getAllContacts();
-        if (c.moveToFirst())
-        {
-            do {
-                DisplayContact(c);
-            } while (c.moveToNext());
-        }
-        db.close();
-        */
+		addToListView(db);
+        
         
         /*
         //---get a contact---
@@ -101,6 +95,47 @@ public class DatabasesActivity extends Activity {
         }
         db.close();
     } // end of onCreate()
+    
+    //=================================================================
+    // AddToListView()
+    //  0. accepts a dbadapter
+    //  2. extract all the rows
+    //  4. pass all the rows to Activity.startManagingCursor()
+    //  6. extract all columns from dbadapter and put them into an array
+    // 10. extract all the textViews and put them in an array
+    // 15. create a simple_cursor_adapter (sca) and initialize it
+    // 20. create a list_view
+    // 22. pass the sca to lv
+    //=================================================================
+    @SuppressWarnings("deprecation")
+	private void addToListView(DBAdapter db) {//0 
+
+    	Cursor c = db.getAllContacts(); // 2
+    	startManagingCursor(c); // 4
+
+    	String [] from = { // 6
+    			DBAdapter.KEY_ROWID, 
+    			DBAdapter.KEY_NAME, 
+    			DBAdapter.KEY_EMAIL 
+    			};
+    	int [] to = { // 10
+    			R.id.textView1, 
+    			R.id.textView2, 
+    			R.id.textView3 
+    			};
+
+    	SimpleCursorAdapter sca = 
+    			new SimpleCursorAdapter( // 15
+    					this,
+    					R.layout.person,
+    					c,
+    					from,
+    					to); 
+
+    	ListView lv = (ListView) findViewById(android.R.id.list); // 20
+
+    	lv.setAdapter(sca); // 22
+    }
     
     //=================================================================
     // copyDB() - copy db files?
